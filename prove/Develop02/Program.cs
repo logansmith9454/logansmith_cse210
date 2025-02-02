@@ -80,50 +80,58 @@ class Program
         string[] journalList = Directory.GetFiles("C:/Users/Smith/cse210/logansmith_cse210/prove/Develop02/JournalEntries");
         int journalCounter = 1;
         Console.WriteLine();
-        foreach (string file in journalList)
-        {
-            string fileName = Path.GetFileName(file);
-            Console.WriteLine($"{journalCounter}: {fileName}");
-            filesDict.Add(journalCounter, file);
-            journalCounter += 1;
-        }
-
-        int numberOfJournals = filesDict.Count();
-        bool passingValue = false; // passingValue indicates that a valid input has been given
-        int journalSelection = 0;
-        while (passingValue == false) // loops until a valid input is given
-        {
-            Console.Write("Select a file: ");
-            journalSelection = int.Parse(Console.ReadLine());
-            if (journalSelection > 0 && journalSelection <= numberOfJournals)
-            {
-                passingValue = true;
-            }
-            else
-            {
-                Console.WriteLine("Invalid value. Try again.");
-            }
-        }
-        string filePath = filesDict[journalSelection];
-        filePath = Path.GetFullPath(filePath); // this ensures that the filepath is correct
-        string[] data = System.IO.File.ReadAllLines(filePath);
         Journal currentJournal = new Journal();
-        currentJournal._name = Path.GetFileName(filePath);
-        Console.WriteLine($"File loaded: {currentJournal._name}");
 
-
-        foreach (string line in data) // separates the data into lines, stores each line in a Entry class
+        if (journalList.Count() != 0)
         {
-            string[] values = line.Split('`');
-            if (values.Length != 0)
+            foreach (string file in journalList)
             {
-                Entry entry = new Entry();
-                entry._date = values[0];
-                entry._prompt = values[1];
-                entry._text = values[2];
-                currentJournal._entryList.Add(entry);
+                string fileName = Path.GetFileName(file);
+                Console.WriteLine($"{journalCounter}: {fileName}");
+                filesDict.Add(journalCounter, file);
+                journalCounter += 1;
+            }
+
+            int numberOfJournals = filesDict.Count();
+            bool passingValue = false; // passingValue indicates that a valid input has been given
+            int journalSelection = 0;
+            while (passingValue == false) // loops until a valid input is given
+            {
+                Console.Write("Select a file: ");
+                journalSelection = int.Parse(Console.ReadLine());
+                if (journalSelection > 0 && journalSelection <= numberOfJournals)
+                {
+                    passingValue = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid value. Try again.");
+                }
+            }
+            string filePath = filesDict[journalSelection];
+            filePath = Path.GetFullPath(filePath); // this ensures that the filepath is correct
+            string[] data = System.IO.File.ReadAllLines(filePath);
+            currentJournal._name = Path.GetFileName(filePath);
+            Console.WriteLine($"File loaded: {currentJournal._name}");
+
+            foreach (string line in data) // separates the data into lines, stores each line in a Entry class
+            {
+                string[] values = line.Split('`');
+                if (values.Length != 0)
+                {
+                    Entry entry = new Entry();
+                    entry._date = values[0];
+                    entry._prompt = values[1];
+                    entry._text = values[2];
+                    currentJournal._entryList.Add(entry);
+                }
             }
         }
+        else
+        {
+            Console.WriteLine("No journals have been saved.");
+        }
+
         return currentJournal;
     }
 }

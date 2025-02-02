@@ -74,10 +74,17 @@ class Journal
     Returns: none
     */
     {
-        Console.WriteLine("Journal Entries:");
-        foreach (Entry _entry in _entryList)
+        if (_entryList.Count() != 0)
         {
-            _entry.DisplayEntry();
+            Console.WriteLine("Journal Entries:");
+            foreach (Entry _entry in _entryList)
+            {
+                _entry.DisplayEntry();
+            }
+        }
+        else
+        {
+            Console.WriteLine("The journal is empty.");
         }
     }
 
