@@ -78,7 +78,7 @@ class Program
 
         // Retrieves the filenames and stores them in the dictionary
         string[] journalList = Directory.GetFiles("C:/Users/Smith/cse210/logansmith_cse210/prove/Develop02/JournalEntries");
-        int journalCounter = 1;
+        int journalCounter = 0;
         Console.WriteLine();
         Journal currentJournal = new Journal();
 
@@ -87,9 +87,9 @@ class Program
             foreach (string file in journalList)
             {
                 string fileName = Path.GetFileName(file);
-                Console.WriteLine($"{journalCounter}: {fileName}");
                 filesDict.Add(journalCounter, file);
                 journalCounter += 1;
+                Console.WriteLine($"{journalCounter}: {fileName}");
             }
 
             int numberOfJournals = filesDict.Count();
@@ -97,7 +97,7 @@ class Program
             int journalSelection = 0;
             while (passingValue == false) // loops until a valid input is given
             {
-                Console.Write("Select a file: ");
+                Console.Write($"Select a file (1-{journalCounter}): ");
                 journalSelection = int.Parse(Console.ReadLine());
                 if (journalSelection > 0 && journalSelection <= numberOfJournals)
                 {
