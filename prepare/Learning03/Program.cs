@@ -11,7 +11,6 @@ class Program
         Fraction Fraction2 = new Fraction(5);
         Console.WriteLine(Fraction2.GetFractionString());
         Console.WriteLine(Fraction2.GetDecimalValue());
-
         Fraction Fraction3 = new Fraction(3, 4);
         Console.WriteLine(Fraction3.GetFractionString());
         Console.WriteLine(Fraction3.GetDecimalValue());
