@@ -24,11 +24,11 @@ class Program
             else
             {
                 scripture.RemoveWord();
-                scripture.DisplayScripture();
             }
 
             if (scripture.IsFinished())
             {
+                scripture.DisplayScripture();
                 quit = true;
             }
         }
