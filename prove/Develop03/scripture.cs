@@ -8,7 +8,7 @@ class Scripture
 
     public Scripture()
     {
-        string[] _scriptures = System.IO.File.ReadAllLines("C:/Users/Smith/cse210/logansmith_cse210/prove/Develop03/scriptures.csv");
+        string[] _scriptures = System.IO.File.ReadAllLines(@"..\..\..\scriptures.csv");
         // foreach (var _thing in _scriptures)
         // {
         //     Console.WriteLine(_thing);
