@@ -27,7 +27,7 @@ class Journal
         {
             _fileName += ".csv";
         }
-        _filePath = $"C:/Users/Smith/cse210/logansmith_cse210/prove/Develop02/JournalEntries/{_fileName}"; // combines the full filepath
+        _filePath = $"C:..//..//..//JournalEntries/{_fileName}"; // combines the full filepath
         _name = _fileName;
         if (File.Exists(_filePath))
         {

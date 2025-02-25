@@ -77,7 +77,7 @@ class Program
         var filesDict = new Dictionary<int, string>();
 
         // Retrieves the filenames and stores them in the dictionary
-        string[] journalList = Directory.GetFiles("C:/Users/Smith/cse210/logansmith_cse210/prove/Develop02/JournalEntries");
+        string[] journalList = Directory.GetFiles("C:..//..//..//JournalEntries");
         int journalCounter = 0;
         Console.WriteLine();
         Journal currentJournal = new Journal();
