@@ -1,7 +1,7 @@
 class Listing : Activity
 {
     private int _count;
-    private List<string> _promptList = new List<string> { "Who are people that you appreciate?", "What are personal strengths of yours?", "Who are people that you hae helped this week?", "When have you felt the Holy Ghost this month?", "Who are some of your personal heroes?" };
+    private List<string> _promptList = new List<string> { "Who are people that you appreciate?", "What are personal strengths of yours?", "Who are people that you hae helped this week?", "When have you felt the Holy Ghost this month?", "Who are some of your personal heroes?", "What has happened in the past day that I am grateful for?", "How have I seen God's hand in my life this week?", "What have I done this week to improve myself?" };
 
     public Listing() : base()
     {
