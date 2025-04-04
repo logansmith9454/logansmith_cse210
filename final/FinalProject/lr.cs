@@ -1,18 +1,23 @@
 class LR : Edge
 {
-    private string _solvedLocation;
+    private char _solvedLocation;
 
     public LR() : base()
     {
-        _solvedLocation = "";
+        _solvedLocation = 'a';
     }
 
-    public LR(string location, bool orientation, string solvedLocation) : base(location, orientation)
+    public LR(char location, bool orientation, char solvedLocation) : base(location, orientation)
     {
         _solvedLocation = solvedLocation;
     }
 
-    public string GetSolvedLocation()
+    public LR(LR lrEdge) : base(lrEdge.GetLocation(), lrEdge.GetOrientation())
+    {
+        _solvedLocation = lrEdge.GetSolvedLocation();
+    }
+
+    public char GetSolvedLocation()
     {
         return _solvedLocation;
     }

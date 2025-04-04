@@ -5,14 +5,16 @@ class Ori : Edge
 
     }
 
-    public Ori(string location, bool orientation) : base(location, orientation)
-    {
+    public Ori(char location, bool orientation) : base(location, orientation) { }
 
-    }
+    public Ori(Ori oriEdge) : base(oriEdge.GetLocation(), oriEdge.GetOrientation()) { }
 
-    public void SetLocation(string NewLocation, bool NewOrientation)
+
+    public void SetLocation(char NewLocation, bool NewOrientation)
     {
         SetLocation(NewLocation);
         SetOrientation(NewOrientation);
     }
+
+
 }

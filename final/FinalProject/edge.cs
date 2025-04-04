@@ -1,25 +1,25 @@
 class Edge
 {
-    private string _location;
+    private char _location;
     private bool _orientation;
     public Edge()
     {
-        _location = "";
+        _location = 'a';
         _orientation = true;
     }
 
-    public Edge(string location, bool orientation)
+    public Edge(char location, bool orientation)
     {
         _location = location;
         _orientation = orientation;
     }
 
-    public string GetLocation()
+    public char GetLocation()
     {
         return _location;
     }
 
-    public void SetLocation(string location)
+    public void SetLocation(char location)
     {
         _location = location;
     }
@@ -34,7 +34,7 @@ class Edge
         _orientation = orientation;
     }
 
-    public void Move(string location, bool keepOrientation)
+    public void Move(char location, bool keepOrientation)
     {
         _location = location;
         if (!keepOrientation)

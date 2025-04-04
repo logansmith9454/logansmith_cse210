@@ -17,6 +17,17 @@ class Centers : Cycle
             _isOriented = false;
         }
     }
+
+    public Centers(bool isOriented) : base()
+    {
+        if (!isOriented)
+        {
+            Move(1);
+        }
+    }
+
+    public Centers(Centers centers) : base(centers.GetRotation()) { }
+
     public bool GetIsOriented()
     {
         return _isOriented;
