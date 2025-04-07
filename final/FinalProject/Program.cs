@@ -3,29 +3,16 @@ using System;
 class Program
 {
     static Dictionary<string, string> turnMap = new Dictionary<string, string>{
-        {"U", "U'"}, {"U'", "U"}, {"U2", "U2"}, {"M", "M'"}, {"M'", "M"}, {"M2", "M2"}
+        {"U", "U'"}, {"U'", "U"}, {"U2", "U2"}, {"M", "M'"}, {"M'", "M"}, {"M2", "M2"}, {"M*", "M*"}
     };
     static void Main(string[] args)
     {
         Console.Clear();
-        // Cube scrambledCube = GetScramble();
-        // List<string> solutionMoves = Solve(scrambledCube);
-        // DisplaySolution(solutionMoves);
+        Cube scrambledCube = GetScramble();
+        // scrambledCube.DisplayCube();
+        List<string> solutionMoves = Solve(scrambledCube);
+        DisplaySolution(solutionMoves);
 
-
-
-        Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string> testDict = new Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>();
-        Cube newCube = new Cube();
-        newCube.UMoves(" ", testDict);
-        Console.Clear();
-        foreach ((int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)) cubeState in testDict.Keys)
-        {
-            Cube testCube = TupleToCube(cubeState);
-            Console.WriteLine($"Move: {testDict[cubeState]}");
-            testCube.DisplayCube();
-            Console.WriteLine();
-        }
-        Console.WriteLine(testDict.Count());
     }
 
     public static Cube GetScramble()
@@ -117,18 +104,22 @@ class Program
                     }
                     else
                     {
-                        int orientation = 0;
-                        try
+                        bool orientation = true;
+                        if (lrOrientation == '0')
                         {
-                            orientation = Convert.ToInt32(lrOrientation);
+                            orientation = false;
                         }
-                        catch
+                        else if (lrOrientation == '1')
+                        {
+                            orientation = true;
+                        }
+                        else
                         {
                             Console.WriteLine("Invalid orientation. Please enter either 0 or 1");
                         }
                         unclaimedEdges.Remove(lrLocation);
-                        bool orientationBool = Convert.ToBoolean(orientation);
-                        lrEdge.Move(lrLocation, orientationBool);
+                        // Console.WriteLine($"Orientation: {orientation}");
+                        lrEdge.Move(lrLocation, orientation);
                         lrCheck = true;
                     }
                 }
@@ -176,12 +167,44 @@ class Program
     public static List<string> Solve(Cube scrambledCube)
     {
         List<string> solutionMoves = new List<string>();
+
         var scrambledTuple = scrambledCube.CubeToTuple();
         (int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)) solvedTuple = (0, true, (('b', true), ('d', true)), (true, true, true, true));
 
         List<Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>> scrambledSide = new List<Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>> { new Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string> { { scrambledTuple, " " } } };
 
         List<Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>> solvedSide = new List<Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>> { new Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string> { { solvedTuple, " " } } };
+
+        Cube uCube = new Cube();
+        uCube.U();
+        solvedSide[0][uCube.CubeToTuple()] = " ";
+
+        Cube upCube = new Cube();
+        upCube.Up();
+        solvedSide[0][upCube.CubeToTuple()] = " ";
+
+        Cube muCube = new Cube();
+        muCube.M();
+        muCube.U();
+        solvedSide[0][muCube.CubeToTuple()] = " ";
+
+        Cube mupCube = new Cube();
+        mupCube.M();
+        mupCube.Up();
+        solvedSide[0][mupCube.CubeToTuple()] = " ";
+
+
+        Cube uCubeScram = new Cube(scrambledCube);
+        uCubeScram.U();
+        scrambledSide[0][uCubeScram.CubeToTuple()] = "(U)";
+
+        Cube upCubeScram = new Cube(scrambledCube);
+        upCubeScram.Up();
+        scrambledSide[0][upCubeScram.CubeToTuple()] = "(U')";
+
+        Cube u2CubeScram = new Cube(scrambledCube);
+        u2CubeScram.U2();
+        scrambledSide[0][u2CubeScram.CubeToTuple()] = "(U2)";
 
         if (scrambledTuple == solvedTuple)
         {
@@ -193,21 +216,28 @@ class Program
         {
             scrambledSide.Add(new Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>());
 
+
             foreach (KeyValuePair<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string> cubeState in scrambledSide[layer])
             {
                 TurnCube(cubeState, scrambledSide[layer + 1]);
             }
+
             solutionMoves = CheckSolved(solvedTuple, solvedSide[layer], scrambledSide[layer + 1]);
+
             if (solutionMoves[0].Length > 2)
             {
                 return solutionMoves;
             }
+
             solvedSide.Add(new Dictionary<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string>());
+
             foreach (KeyValuePair<(int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)), string> currentState in solvedSide[layer])
             {
                 TurnCube(currentState, solvedSide[layer + 1]);
             }
+
             solutionMoves = CheckSolved(solvedTuple, solvedSide[layer + 1], scrambledSide[layer + 1]);
+
             if (solutionMoves[0].Length > 2)
             {
                 return solutionMoves;
@@ -269,10 +299,10 @@ class Program
             var testDuplicate = scrambledSide.Keys.Intersect(solvedSide.Keys);
             if (testDuplicate.Any())
             {
-                (int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)) middleState = scrambledSide.Keys.Intersect(solvedSide.Keys).FirstOrDefault();
-                Console.WriteLine("Solution found!");
-                string scrambledMoves = scrambledSide[middleState];
-                string solvedMoves = solvedSide[middleState];
+                (int, bool, ((char, bool), (char, bool)), (bool, bool, bool, bool)) middleStates = scrambledSide.Keys.Intersect(solvedSide.Keys).FirstOrDefault();
+                Console.WriteLine("\nSolution found!");
+                string scrambledMoves = scrambledSide[middleStates];
+                string solvedMoves = solvedSide[middleStates];
                 solutionMoves.Add(scrambledMoves);
                 if (!(solvedMoves == " "))
                 {
@@ -321,22 +351,34 @@ class Program
     {
         int movecount;
         string finalSolution;
-        if (solutionMoves[1] == "")
+        if (solutionMoves.Count == 1)
         {
-            movecount = 1;
-            Console.WriteLine($"Solution: {solutionMoves[1]}");
+            Console.WriteLine("\nMovecount: 1");
+            Console.WriteLine($"Solution: {solutionMoves[0].Trim()}");
         }
         else
         {
-            foreach (string item in solutionMoves)
-            {
-                Console.WriteLine(item);
-            }
             string scrambledMoves = solutionMoves[0];
             string solvedMoves = solutionMoves[1];
-            finalSolution = scrambledMoves.Trim() + " " + solvedMoves.Trim();
+            string invertedSolvedMoves = InvertMoves(solvedMoves);
+            finalSolution = (scrambledMoves.Trim() + " " + invertedSolvedMoves.Trim()).Trim();
             string[] solutionList = finalSolution.Split(" ");
-            movecount = solutionList.Count();
+            movecount = 0;
+            foreach (string move in scrambledMoves.Trim().Split(" "))
+            {
+                if (!(move.Contains("(")))
+                {
+                    movecount += 1;
+                }
+            }
+            foreach (string move in solvedMoves.Trim().Split(" "))
+            {
+                if (!(move.Contains("(")))
+                {
+                    movecount += 1;
+                }
+            }
+
             Console.WriteLine($"Movecount: {movecount}");
             Console.WriteLine($"Solution: {finalSolution}");
         }
@@ -345,11 +387,16 @@ class Program
     public static string InvertMoves(string moves)
     {
         List<string> invertedMoves = new List<string>();
-        moves.Trim();
-        string[] movesList = moves.Split(" ");
+        string trimmedMoves = moves.Trim();
+        // Console.WriteLine($"Moves to invert: {trimmedMoves.Length}");
+        string[] movesList = trimmedMoves.Split(" ");
+        // Console.WriteLine($"Moves in list: {trimmedMoves.Length}");
         foreach (string move in movesList)
         {
-            invertedMoves.Add(turnMap[move]);
+            if (!(move == ""))
+            {
+                invertedMoves.Add(turnMap[move]);
+            }
         }
         invertedMoves.Reverse();
         string invertedString = string.Join(" ", invertedMoves);

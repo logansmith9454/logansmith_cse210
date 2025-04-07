@@ -2,6 +2,7 @@ class Edge
 {
     private char _location;
     private bool _orientation;
+
     public Edge()
     {
         _location = 'a';

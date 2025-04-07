@@ -8,7 +8,7 @@ class Centers : Cycle
 
     public Centers(int rotation) : base(rotation)
     {
-        if (GetRotation() == 0)
+        if (rotation == 0 | rotation == 2)
         {
             _isOriented = true;
         }
@@ -24,9 +24,13 @@ class Centers : Cycle
         {
             Move(1);
         }
+        _isOriented = isOriented;
     }
 
-    public Centers(Centers centers) : base(centers.GetRotation()) { }
+    public Centers(Centers centers) : base(centers.GetRotation())
+    {
+        _isOriented = centers.GetIsOriented();
+    }
 
     public bool GetIsOriented()
     {

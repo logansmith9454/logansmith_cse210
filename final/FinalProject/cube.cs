@@ -214,11 +214,21 @@ class Cube
     {
         Cube mCube = new Cube(this);
         mCube.M();
-        location[mCube.CubeToTuple()] = moves + " M";
+        var mTuple = mCube.CubeToTuple();
 
         Cube mpCube = new Cube(this);
         mpCube.Mp();
-        location[mpCube.CubeToTuple()] = moves + " M'";
+        var mpTuple = mpCube.CubeToTuple();
+
+        if (mTuple == mpTuple)
+        {
+            location[mTuple] = moves + " M*";
+        }
+        else
+        {
+            location[mTuple] = moves + " M";
+            location[mpTuple] = moves + " M'";
+        }
 
         Cube m2Cube = new Cube(this);
         m2Cube.M2();
@@ -240,11 +250,21 @@ class Cube
 
         Cube mCube = new Cube(this);
         mCube.M();
-        location[mCube.CubeToTuple()] = moves + " M";
+        var mTuple = mCube.CubeToTuple();
 
         Cube mpCube = new Cube(this);
         mpCube.Mp();
-        location[mpCube.CubeToTuple()] = moves + " M'";
+        var mpTuple = mpCube.CubeToTuple();
+
+        if (mTuple == mpTuple)
+        {
+            location[mTuple] = moves + " M*";
+        }
+        else
+        {
+            location[mTuple] = moves + " M";
+            location[mpTuple] = moves + " M'";
+        }
 
         Cube m2Cube = new Cube(this);
         m2Cube.M2();
@@ -277,6 +297,7 @@ class Cube
         }
         if (flipParity)
         {
+            this.DisplayCube();
             throw new ArgumentException("Invalid cube state (edge parity). Please restart the program and enter valid inputs.");
         }
     }
